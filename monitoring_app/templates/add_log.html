@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Log{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Log</h2>
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <h4>Log Details</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.weight.label_tag }}
+                {{ user_log_form.weight }}
+                {% for error in user_log_form.weight.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.calories_consumed.label_tag }}
+                {{ user_log_form.calories_consumed }}
+                {% for error in user_log_form.calories_consumed.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.workout_intensity.label_tag }}
+                <div>
+                    {{ user_log_form.workout_intensity }}
+                </div>
+                {% for error in user_log_form.workout_intensity.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.steps.label_tag }}
+                {{ user_log_form.steps }}
+                {% for error in user_log_form.steps.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.sleep_hours.label_tag }}
+                {{ user_log_form.sleep_hours }}
+                {% for error in user_log_form.sleep_hours.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.mood.label_tag }}
+                {{ user_log_form.mood }}
+                {% for error in user_log_form.mood.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.heart_rate.label_tag }}
+                {{ user_log_form.heart_rate }}
+                {% for error in user_log_form.heart_rate.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+                {{ user_log_form.blood_pressure.label_tag }}
+                {{ user_log_form.blood_pressure }}
+                {% for error in user_log_form.blood_pressure.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <h4 class="mt-4">Food Consumed</h4>
+        <div id="food-formset">
+            {{ food_formset.management_form }}
+            {% for form in food_formset %}
+                <div class="food-form border p-3 mb-2 position-relative" id="form-{{ forloop.counter0 }}">
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            {{ form.food_item.label_tag }}
+                            {{ form.food_item }}
+                            {% for error in form.food_item.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            {{ form.quantity.label_tag }}
+                            {{ form.quantity }}
+                            {% for error in form.quantity.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-2 mb-3 d-flex align-items-end">
+                            {% if food_formset.can_delete %}
+                                <button type="button" class="btn btn-danger remove-form" data-form-id="{{ forloop.counter0 }}">Remove</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary" id="add-more-food">Add More Food</button>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Log</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Function to update form indices
+    function updateFormIndices() {
+        $('#food-formset .food-form').each(function(index) {
+            $(this).attr('id', 'form-' + index);
+            $(this).find(':input').each(function() {
+                var name = $(this).attr('name');
+                if (name) {
+                    name = name.replace(/foodconsumption_set-\d+-/, 'foodconsumption_set-' + index + '-');
+                    $(this).attr('name', name);
+                    var id = 'id_' + name;
+                    $(this).attr('id', id);
+                }
+            });
+        });
+        $('#id_foodconsumption_set-TOTAL_FORMS').val($('#food-formset .food-form').length);
+    }
+
+    $(document).ready(function() {
+        $('#add-more-food').click(function(e) {
+            e.preventDefault();
+            var formIdx = $('#food-formset .food-form').length;
+            var emptyForm = $('#empty-form').html();
+            var newForm = $(emptyForm.replace(/__prefix__/g, formIdx));
+            $('#food-formset').append(newForm);
+            updateFormIndices();
+        });
+
+        $('#food-formset').on('click', '.remove-form', function(e) {
+            e.preventDefault();
+            if ($('#food-formset .food-form').length > 1) {
+                var formId = $(this).data('form-id');
+                $('#form-' + formId).remove();
+                updateFormIndices();
+            } else {
+                alert('At least one food item is required.');
+            }
+        });
+    });
+</script>
+
+<!-- Empty form template -->
+<div id="empty-form" style="display: none;">
+    <div class="food-form border p-3 mb-2 position-relative" id="form-__prefix__">
+        <div class="row">
+            <div class="col-md-5 mb-3">
+                {{ food_formset.empty_form.food_item.label_tag }}
+                {{ food_formset.empty_form.food_item }}
+            </div>
+            <div class="col-md-5 mb-3">
+                {{ food_formset.empty_form.quantity.label_tag }}
+                {{ food_formset.empty_form.quantity }}
+            </div>
+            <div class="col-md-2 mb-3 d-flex align-items-end">
+                <button type="button" class="btn btn-danger remove-form" data-form-id="__prefix__">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Client-side validation -->
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                var isValid = form.checkValidity();
+                if (!isValid) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .remove-form {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+</style>
+{% endblock %}

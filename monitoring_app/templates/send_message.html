@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Send Message{% endblock %}
+
+{% block content %}
+<h2>Send Message</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% for f in form %}
+        <div class="mb-3">
+            {{ f.label_tag }}{{ f }}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
+{% endblock %}

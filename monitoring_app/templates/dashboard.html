@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header d-flex justify-content-between align-items-center">
+    <h2>Welcome back, {{ user.username }}!</h2>
+    <div>
+        <a href="{% url 'add_log' %}" class="btn btn-success me-2">Add New Log</a>
+        <a href="{% url 'export_csv' %}" class="btn btn-info me-2">Export CSV</a>
+        <a href="{% url 'export_pdf' %}" class="btn btn-danger me-2">Export PDF</a>
+        <a href="{% url 'send_message' %}" class="btn btn-primary">Send Message</a>
+    </div>
+</div>
+
+<!-- User Goals Section -->
+<div class="card mb-4 p-4 shadow-sm">
+    <h4>User Goals</h4>
+    <p>Current Weight: <strong>{{ current_weight }} kg</strong></p>
+    <p>Target Weight: <strong>{{ target_weight }} kg</strong></p>
+    <div class="progress" style="height: 25px;">
+    </div>
+</div>
+
+<!-- Dietary Recommendations Section -->
+<div class="card p-4 shadow-sm mb-4">
+    <h3>Dietary Recommendations</h3>
+    {% if recommendations %}
+    <ul>
+        {% for rec in recommendations %}
+            <li>{{ rec }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No recommendations available. Please add some activity logs.</p>
+    {% endif %}
+</div>
+
+<!-- Existing Charts and Graphs -->
+<!-- Include the data in a script tag using json_script -->
+{{ dates|json_script:"dates-data" }}
+{{ weights|json_script:"weights-data" }}
+{{ calories|json_script:"calories-data" }}
+{{ food_consumption_data|json_script:"food-consumption-data" }}
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card p-4 shadow-sm mb-4">
+            <h3>Weight Trend Over Time</h3>
+            <div id="weightChart"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-4 shadow-sm mb-4">
+            <h3>Calorie Intake Over Time</h3>
+            <div id="calorieChart"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Food Consumption Chart -->
+<div class="card p-4 shadow-sm mb-4">
+    <h3>Food Consumption Breakdown</h3>
+    <div id="foodChart"></div>
+</div>
+
+<!-- User Logs Table -->
+<h3>Your Logs</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Weight (kg)</th>
+                <th>Calories Consumed</th>
+                <th>Workout Intensity</th>
+                <th>Steps</th>
+                <th>Sleep Hours</th>
+                <th>Heart Rate</th>
+                <th>Blood Pressure</th>
+                <th>Mood</th>
+                <th>Food Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.date }}</td>
+                <td>{{ log.weight }}</td>
+                <td>{{ log.calories_consumed }}</td>
+                <td>{{ log.get_workout_intensity_display }}</td>
+                <td>{{ log.steps }}</td>
+                <td>{{ log.sleep_hours }}</td>
+                <td>{{ log.heart_rate }}</td>
+                <td>{{ log.blood_pressure }}</td>
+                <td>{{ log.mood }}</td>
+                <td>
+                    {% if log.foodconsumption_set.exists %}
+                        {% for food in log.foodconsumption_set.all %}
+                            <span class="badge bg-primary">{{ food.food_item.name }} ({{ food.quantity }}g)</span>
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include Plotly.js for charts -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+    var dates = JSON.parse(document.getElementById('dates-data').textContent);
+    var weights = JSON.parse(document.getElementById('weights-data').textContent);
+    var calories = JSON.parse(document.getElementById('calories-data').textContent);
+    var foodConsumptionData = JSON.parse(document.getElementById('food-consumption-data').textContent);
+
+    // Ensure that the dates, weights, and calories arrays are defined
+    if (dates.length > 0 && weights.length > 0 && calories.length > 0) {
+        // Weight Chart
+        var weightTrace = {
+            x: dates,
+            y: weights,
+            mode: 'lines+markers',
+            name: 'Weight (kg)',
+            line: { color: '#1f77b4' }
+        };
+        var weightData = [weightTrace];
+        var weightLayout = {
+            title: 'Weight Trend Over Time',
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'Weight (kg)' }
+        };
+        Plotly.newPlot('weightChart', weightData, weightLayout);
+
+        // Calorie Chart
+        var calorieTrace = {
+            x: dates,
+            y: calories,
+            type: 'bar',
+            name: 'Calories Consumed',
+            marker: { color: '#ff7f0e' }
+        };
+        var calorieData = [calorieTrace];
+        var calorieLayout = {
+            title: 'Calorie Intake Over Time',
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'Calories' }
+        };
+        Plotly.newPlot('calorieChart', calorieData, calorieLayout);
+    } else {
+        document.getElementById('weightChart').innerHTML = '<p>No data available for weight chart.</p>';
+        document.getElementById('calorieChart').innerHTML = '<p>No data available for calorie chart.</p>';
+    }
+
+    // Food Consumption Chart
+    if (foodConsumptionData.labels.length > 0 && foodConsumptionData.values.length > 0) {
+        var foodData = [{
+            type: 'pie',
+            labels: foodConsumptionData.labels,
+            values: foodConsumptionData.values,
+            textinfo: 'label+percent',
+            insidetextorientation: 'radial'
+        }];
+        var foodLayout = {
+            title: 'Food Consumption Breakdown'
+        };
+        Plotly.newPlot('foodChart', foodData, foodLayout);
+    } else {
+        document.getElementById('foodChart').innerHTML = '<p>No food consumption data available.</p>';
+    }
+</script>
+{% endblock %}

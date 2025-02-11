@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Inbox</h2>
+    {% if messages %}
+    <ul class="list-group">
+        {% for msg in messages %}
+        <li class="list-group-item">
+            <strong>From:</strong> {{ msg.sender.username }}<br>
+            <strong>Date:</strong> {{ msg.timestamp }}<br>
+            <strong>Content:</strong> {{ msg.content|truncatewords:20 }}<br>
+            <a href="{% url 'message_detail' msg.id %}" class="btn btn-sm btn-primary mt-2">View</a>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No messages.</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No messages.</p>
+    {% endif %}
+</div>
+{% endblock %}

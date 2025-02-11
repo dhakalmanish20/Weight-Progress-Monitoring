@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %} 
+
+{% block title %}FitnessPro - Empower Your Fitness Journey{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay">
+        <div class="container hero-content text-center">
+            <h1 class="display-3 text-white fw-bold mb-4 typed-text"></h1>
+            <p class="lead text-white mb-5">Personalized analytics, expert guidance, and a supportive community all in one place.</p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-2">Get Started</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">Login</a>
+            {% else %}
+                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose <span class="text-primary">FitnessPro</span>?</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="feature-card p-4 h-100 shadow">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-chart-line fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Advanced Analytics</h4>
+                    <p>Leverage cutting-edge tools to monitor progress, analyze performance, and forecast future trends.</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="feature-card p-4 h-100 shadow">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-user-friends fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Community Support</h4>
+                    <p>Connect with like-minded individuals, share achievements, and stay motivated together.</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.6s">
+                <div class="feature-card p-4 h-100 shadow">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-dumbbell fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Personalized Plans</h4>
+                    <p>Get tailored workout and meal plans crafted by experts to suit your unique goals and lifestyle.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Parallax Section -->
+<section class="parallax-section">
+    <div class="parallax-overlay">
+        <div class="container text-center text-white">
+            <h2 class="display-5 mb-4">Your Journey, Our Guidance</h2>
+            <p class="lead mb-5">Embrace the path to wellness with tools and support designed for success.</p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-light btn-lg">Join Now</a>
+            {% else %}
+                <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">Go to Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Users Say</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="testimonial-card p-4 h-100 shadow">
+                    <img src="{% static 'images/user1.jpg' %}" alt="Alex Johnson" class="rounded-circle mb-3" width="80" height="80">
+                    <h5 class="mb-1">Alex Johnson</h5>
+                    <p class="text-muted mb-0">"FitnessPro has completely changed how I approach fitness. The analytics and personalized plans are game-changers!"</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="testimonial-card p-4 h-100 shadow">
+                    <img src="{% static 'images/user2.jpg' %}" alt="Samantha Lee" class="rounded-circle mb-3" width="80" height="80">
+                    <h5 class="mb-1">Samantha Lee</h5>
+                    <p class="text-muted mb-0">"The community support keeps me motivated every day. I've never felt more engaged in my health journey."</p>
+                </div>
+            </div>
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.6s">
+                <div class="testimonial-card p-4 h-100 shadow">
+                    <img src="{% static 'images/user3.jpg' %}" alt="Michael Smith" class="rounded-circle mb-3" width="80" height="80">
+                    <h5 class="mb-1">Michael Smith</h5>
+                    <p class="text-muted mb-0">"The personalized workout plans have helped me achieve goals I never thought possible. Highly recommend FitnessPro."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

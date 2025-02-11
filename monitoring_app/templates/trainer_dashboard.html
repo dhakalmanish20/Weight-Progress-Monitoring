@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Trainer Dashboard{% endblock %}
+
+{% block content %}
+<h2>Trainer Dashboard</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3">
+            {{ field.label_tag }}{{ field }}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% if trainer %}
+<hr/>
+<h4>Certification:</h4>
+<p>{{trainer.certification}}</p>
+<h4>Bio:</h4>
+<p>{{trainer.bio}}</p>
+<h4>Hourly Rate:</h4>
+<p>{{trainer.hourly_rate}}</p>
+{% endif %}
+{% endblock %}

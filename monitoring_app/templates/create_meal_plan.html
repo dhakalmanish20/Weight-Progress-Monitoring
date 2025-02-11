@@ -1,0 +1,23 @@
+{% extends 'base.html' %}  
+{% block title %}Create Meal Plan{% endblock %}  
+{% block content %}  
+<h2>Create Meal Plan</h2>  
+<form method="POST">  
+  {% csrf_token %}  
+  {{ meal_plan_form.as_p }}  
+  <h3>Meal Items</h3>  
+  {{ meal_item_formset.management_form }}  
+  {% for f in meal_item_formset %}  
+    <div class="border p-3 mb-2">  
+      {{ f.name.label_tag }}{{ f.name }}  
+      {{ f.serving_size.label_tag }}{{ f.serving_size }}  
+      {{ f.calories.label_tag }}{{ f.calories }}  
+      {{ f.protein.label_tag }}{{ f.protein }}  
+      {{ f.fat.label_tag }}{{ f.fat }}  
+      {{ f.carbs.label_tag }}{{ f.carbs }}  
+      {{ f.DELETE }} Delete  
+    </div>  
+  {% endfor %}  
+  <button type="submit" class="btn btn-primary">Save Meal Plan</button>  
+</form>  
+{% endblock %}  
