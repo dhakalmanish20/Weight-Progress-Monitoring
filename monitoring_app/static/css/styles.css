@@ -1,298 +1,424 @@
-/* monitoring_app/static/css/styles.css */
-/* Reset and Base Styles */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
-    line-height: 1.6;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-p {
-    margin-bottom: 1rem;
-}
-
-a {
-    color: #00468B;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #002f5f;
-    text-decoration: none;
-}
-
-/* Navbar */
-.navbar {
-    background-color: #00468B;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    font-size: 1.75rem;
-    color: #fff !important;
-}
-
-.nav-link {
-    color: #fff !important;
-    margin-right: 1rem;
-}
-
-.nav-link:hover {
-    color: #FFD700 !important;
-}
-
-.nav-link.active {
-    color: #FFD700 !important;
-    border-bottom: 2px solid #FFD700;
-}
-
-/* Hero Section */
-.hero {
-    position: relative;
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    background: url('../images/fitness-hero.jpg') no-repeat center center/cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 70, 139, 0.8);
-}
-
-.hero-content {
-    z-index: 1;
-}
-
-.hero .display-3 {
-    font-weight: 700;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-}
-
-.hero .btn-primary {
-    background-color: #FFD700;
-    border-color: #FFD700;
-    color: #00468B;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.hero .btn-primary:hover {
-    background-color: #e6c200;
-    color: #003766;
-}
-
-.hero .btn-outline-light:hover {
-    background-color: #fff;
-    color: #00468B;
-}
-
-/* Features Section */
-.features {
-    background-color: #f9f9f9;
-}
-
-.features h2 {
-    font-weight: 700;
-}
-
-.feature-card {
-    background-color: #fff;
-    border-radius: 10px;
-    transition: transform 0.3s;
-}
-
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.features .feature-icon i {
-    color: #00468B;
-}
-
-/* Parallax Section */
-.parallax-section {
-    position: relative;
-    min-height: 60vh;
-    background: url('../images/parallax-bg.jpg') no-repeat center center/cover;
-    display: flex;
-    align-items: center;
-}
-
-.parallax-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 70, 139, 0.7);
-}
-
-.parallax-section .container {
-    position: relative;
-    z-index: 1;
-}
-
-.parallax-section h2 {
-    font-weight: 700;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-}
-
-/* Testimonials Section */
-.testimonials h2 {
-    font-weight: 700;
-}
-
-.testimonial-card {
-    background-color: #fff;
-    border-radius: 10px;
-}
-
-.testimonial-card img {
-    border: 3px solid #00468B;
-}
-
-.testimonial-card h5 {
-    font-weight: 600;
-}
-
-.testimonial-card p {
-    font-style: italic;
-}
-
-/* Buttons */
-.btn {
-    border-radius: 0.25rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.btn-primary {
-    background-color: #00468B;
-    border-color: #00468B;
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background-color: #003766;
-    border-color: #003766;
-}
-
-/* Cards */
-.card {
-    border: none;
-    border-radius: 10px;
-}
-
-/* Animations */
-.wow {
-    visibility: hidden;
-}
-
-.animated {
-    visibility: visible;
-    animation-duration: 1s;
-}
-
-.fadeInUp {
-    animation-name: fadeInUp;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 100%, 0);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .navbar-nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .nav-link {
-        padding: 0.5rem 0;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero {
-        min-height: 60vh;
-    }
-
-    .hero .display-3 {
-        font-size: 2rem;
-    }
-
-    .hero p.lead {
-        font-size: 1rem;
-    }
-}
-
-/* Additional Styles */
-.form-control {
-    border-radius: 0.25rem;
-}
-
-.progress {
-    background-color: #e9ecef;
-}
-
-.progress-bar {
-    background-color: #00468B;
-}
-
-.table {
-    background-color: #fff;
-}
-
-.table th, .table td {
-    vertical-align: middle;
-}
-
-.badge {
-    font-size: 0.9rem;
-}
-
-/* Footer */
-.footer {
-    background-color: #00468B;
-    color: #fff;
-    padding: 2rem 0;
-}
-
-.footer p {
-    margin-bottom: 0;
-}
-
-.footer a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.footer a:hover {
-    text-decoration: underline;
-}
+/* monitoring_app/static/css/styles.css */  
+  
+/* Reset and Base Styles */  
+*, *::before, *::after {  
+    margin: 0;  
+    padding: 0;  
+    box-sizing: border-box;  
+}  
+  
+body {  
+    font-family: 'Poppins', sans-serif;  
+    background-color: #f4f7fa;  
+    color: #333;  
+    line-height: 1.6;  
+}  
+  
+/* Typography */  
+h1, h2, h3, h4, h5, h6 {  
+    font-weight: 600;  
+    margin-bottom: 1rem;  
+}  
+  
+p {  
+    margin-bottom: 1rem;  
+}  
+  
+a {  
+    color: #00468B;  
+    text-decoration: none;  
+}  
+  
+a:hover {  
+    color: #002f5f;  
+    text-decoration: none;  
+}  
+  
+/* Navbar */  
+.navbar {  
+    background-color: #00468B;  
+}  
+  
+.navbar-brand {  
+    font-weight: 700;  
+    font-size: 1.75rem;  
+    color: #fff !important;  
+}  
+  
+/* Adjusted navbar for better mobile responsiveness */  
+.navbar-nav {  
+    display: flex;  
+    align-items: center;  
+}  
+  
+.nav-link {  
+    color: #fff !important;  
+    margin-right: 1rem;  
+    font-size: 1rem; /* Ensure legible font size on mobile */  
+}  
+  
+.nav-link:hover {  
+    color: #FFD700 !important;  
+}  
+  
+.nav-link.active {  
+    color: #FFD700 !important;  
+    border-bottom: 2px solid #FFD700;  
+}  
+  
+/* Hero Section */  
+.hero {  
+    position: relative;  
+    min-height: 80vh;  
+    display: flex;  
+    align-items: center;  
+    justify-content: center; /* Center content horizontally */  
+    background: url('../images/fitness-hero.jpg') no-repeat center center/cover;  
+}  
+  
+.hero-overlay {  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    background: rgba(0, 70, 139, 0.8);  
+}  
+  
+.hero-content {  
+    z-index: 1;  
+    text-align: center; /* Ensure content is centered on smaller screens */  
+    padding: 0 1rem; /* Add padding for better mobile spacing */  
+}  
+  
+.hero .display-3 {  
+    font-weight: 700;  
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);  
+    font-size: 3rem; /* Adjust font size for mobile */  
+}  
+  
+.hero .btn-primary {  
+    background-color: #FFD700;  
+    border-color: #FFD700;  
+    color: #00468B;  
+    transition: background-color 0.3s, color 0.3s;  
+    padding: 0.75rem 1.5rem; /* Increase button size for better tap targets */  
+}  
+  
+.hero .btn-primary:hover {  
+    background-color: #e6c200;  
+    color: #003766;  
+}  
+  
+.hero .btn-outline-light:hover {  
+    background-color: #fff;  
+    color: #00468B;  
+}  
+  
+/* Features Section */  
+.features {  
+    background-color: #f9f9f9;  
+    padding: 2rem 1rem; /* Added padding for better spacing on mobile */  
+}  
+  
+.features h2 {  
+    font-weight: 700;  
+    margin-bottom: 2rem;  
+}  
+  
+/* Use Flexbox for feature cards for better responsiveness */  
+.feature-card {  
+    background-color: #fff;  
+    border-radius: 10px;  
+    transition: transform 0.3s;  
+    padding: 2rem 1.5rem;  
+    display: flex;  
+    flex-direction: column;  
+    align-items: center;  
+}  
+  
+.feature-card:hover {  
+    transform: translateY(-10px);  
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);  
+}  
+  
+.features .feature-icon i {  
+    color: #00468B;  
+    font-size: 3rem;  
+    margin-bottom: 1rem;  
+}  
+  
+/* Parallax Section */  
+.parallax-section {  
+    position: relative;  
+    min-height: 60vh;  
+    background: url('../images/parallax-bg.jpg') no-repeat center center/cover;  
+    display: flex;  
+    align-items: center;  
+    justify-content: center; /* Center content horizontally */  
+}  
+  
+.parallax-overlay {  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    background: rgba(0, 70, 139, 0.7);  
+}  
+  
+.parallax-section .container {  
+    position: relative;  
+    z-index: 1;  
+    text-align: center; /* Center content for mobile */  
+    padding: 0 1rem; /* Add padding for mobile spacing */  
+}  
+  
+.parallax-section h2 {  
+    font-weight: 700;  
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);  
+    font-size: 2.5rem; /* Adjust font size for mobile */  
+}  
+  
+/* Testimonials Section */  
+.testimonials {  
+    padding: 2rem 1rem; /* Adjusted padding for mobile */  
+}  
+  
+.testimonials h2 {  
+    font-weight: 700;  
+    margin-bottom: 2rem;  
+}  
+  
+/* Flexbox for testimonial cards */  
+.testimonial-card {  
+    background-color: #fff;  
+    border-radius: 10px;  
+    padding: 2rem 1.5rem;  
+    display: flex;  
+    flex-direction: column;  
+    align-items: center;  
+}  
+  
+.testimonial-card img {  
+    border: 3px solid #00468B;  
+    border-radius: 50%;  
+    margin-bottom: 1rem;  
+}  
+  
+.testimonial-card h5 {  
+    font-weight: 600;  
+    margin-bottom: 0.5rem;  
+}  
+  
+.testimonial-card p {  
+    font-style: italic;  
+    text-align: center;  
+}  
+  
+/* Buttons */  
+.btn {  
+    border-radius: 0.25rem;  
+    padding: 0.75rem 1.5rem; /* Increased padding for better tap targets */  
+    font-size: 1rem;  
+    cursor: pointer;  
+    transition: background-color 0.3s ease, border-color 0.3s ease;  
+}  
+  
+.btn-primary {  
+    background-color: #00468B;  
+    border-color: #00468B;  
+    color: #fff;  
+}  
+  
+.btn-primary:hover {  
+    background-color: #003766;  
+    border-color: #003766;  
+}  
+  
+/* Cards */  
+.card {  
+    border: none;  
+    border-radius: 10px;  
+    padding: 1.5rem; /* Added padding for better spacing */  
+}  
+  
+/* Animations */  
+.wow {  
+    visibility: hidden;  
+}  
+  
+.animated {  
+    visibility: visible;  
+    animation-duration: 1s;  
+}  
+  
+.fadeInUp {  
+    animation-name: fadeInUp;  
+}  
+  
+@keyframes fadeInUp {  
+    from {  
+        opacity: 0;  
+        transform: translate3d(0, 100%, 0);  
+    }  
+    to {  
+        opacity: 1;  
+        transform: none;  
+    }  
+}  
+  
+/* Responsive Styles */  
+  
+/* Mobile Styles */  
+@media (max-width: 768px) {  
+    .navbar-nav {  
+        flex-direction: column;  
+        align-items: flex-start;  
+    }  
+  
+    .nav-link {  
+        padding: 0.5rem 0;  
+        margin-right: 0; /* Remove margin on mobile */  
+        font-size: 1.2rem; /* Increase font size for readability */  
+    }  
+  
+    .hero {  
+        min-height: 60vh;  
+    }  
+  
+    .hero .display-3 {  
+        font-size: 2.5rem;  
+    }  
+  
+    .hero p.lead {  
+        font-size: 1rem;  
+    }  
+  
+    .features {  
+        text-align: center;  
+    }  
+  
+    .feature-card {  
+        margin-bottom: 2rem; /* Add spacing between cards on mobile */  
+    }  
+  
+    .footer {  
+        padding: 1.5rem 0;  
+    }  
+}  
+  
+/* Small Mobile Styles */  
+@media (max-width: 576px) {  
+    .hero {  
+        min-height: 50vh;  
+    }  
+  
+    .hero .display-3 {  
+        font-size: 2rem;  
+    }  
+  
+    .btn {  
+        padding: 1rem 1.5rem; /* Ensure buttons are large enough for tap targets */  
+    }  
+}  
+  
+/* Additional Styles */  
+.form-control {  
+    border-radius: 0.25rem;  
+    padding: 0.75rem;  
+    min-height: 48px; /* Ensure minimum tap target size */  
+    font-size: 1rem; /* Increase font size for better readability */  
+}  
+  
+/* Added styles for floating labels and icons in forms */  
+.form-floating {  
+    position: relative;  
+}  
+  
+.form-floating .form-control {  
+    padding-top: 1.5rem;  
+}  
+  
+.form-floating label {  
+    position: absolute;  
+    top: 0.75rem;  
+    left: 0.75rem;  
+    padding: 0 0.5rem;  
+    transition: all 0.3s ease;  
+    pointer-events: none;  
+    background-color: #fff;  
+}  
+  
+.form-control:focus + label,  
+.form-control:not(:placeholder-shown) + label {  
+    top: -0.5rem;  
+    left: 0.5rem;  
+    font-size: 0.85rem;  
+    color: #00468B;  
+}  
+  
+/* Password visibility toggle button */  
+.input-group-text {  
+    cursor: pointer;  
+}  
+  
+/* Icons inside input fields */  
+.input-icon {  
+    position: absolute;  
+    top: 50%;  
+    left: 0.75rem;  
+    transform: translateY(-50%);  
+    color: #888;  
+}  
+  
+/* Adjust padding when icons are present */  
+.form-control.has-icon {  
+    padding-left: 2.5rem;  
+}  
+  
+/* Tooltip for errors */  
+.invalid-tooltip {  
+    position: absolute;  
+    top: 100%;  
+    left: 0;  
+    z-index: 5;  
+    display: none;  
+    width: 100%;  
+    padding: 0.5rem;  
+    font-size: 0.9rem;  
+    color: #fff;  
+    background-color: rgba(220, 53, 69, 0.9);  
+    border-radius: 0.25rem;  
+}  
+  
+.was-validated .form-control:invalid ~ .invalid-tooltip {  
+    display: block;  
+}  
+  
+/* Loading Spinner */  
+.spinner-border {  
+    width: 3rem;  
+    height: 3rem;  
+}  
+  
+/* Footer */  
+.footer {  
+    background-color: #00468B;  
+    color: #fff;  
+    padding: 2rem 1rem;  
+    text-align: center;  
+}  
+  
+.footer p {  
+    margin-bottom: 0.5rem;  
+}  
+  
+.footer a {  
+    color: inherit;  
+    text-decoration: none;  
+}  
+  
+.footer a:hover {  
+    text-decoration: underline;  
+}  

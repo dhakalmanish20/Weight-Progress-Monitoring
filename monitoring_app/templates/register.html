@@ -1,38 +1,179 @@
-{% extends "base.html" %}
-{% load your_custom_filters %}
-
-
-{% block title %}Register - FitnessPro{% endblock %}
-
-{% block content %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card p-4 shadow">
-                <h2 class="card-title text-center mb-4">Create Your Account</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            {{ field.label_tag }}
-                            {{ field|add_class:"form-control" }}
-                            {% if field.help_text %}
-                                <small class="text-muted">{{ field.help_text }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                                <div class="text-danger">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
-                    </div>
-                    <div class="mt-3 text-center">
-                        Already have an account? <a href="{% url 'login' %}">Login here</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+{% extends "base.html" %}  
+{% load static %}  
+{% load widget_tweaks %}  
+  
+{% block title %}Register - FitnessPro{% endblock %}  
+  
+{% block content %}  
+<div class="container my-5">  
+    <div class="row justify-content-center">  
+        <!-- Used col-md-8 for better spacing on larger screens -->  
+        <div class="col-md-8 col-lg-6">  
+            <div class="card p-4 shadow">  
+                <!-- Progress Bar for Multi-Step Form -->  
+                <div id="registrationProgress" class="mb-4">  
+                    <div class="progress">  
+                        <div class="progress-bar" role="progressbar" style="width: 33%;" id="progressBar">  
+                            Step 1 of 3  
+                        </div>  
+                    </div>  
+                </div>  
+                <h2 class="card-title text-center mb-4">Create Your Account</h2>  
+                <form method="post" class="needs-validation" novalidate>  
+                    {% csrf_token %}  
+                    <!-- Step 1: Account Information -->  
+                    <div id="step1" class="form-step">  
+                        <h4 class="mb-3">Account Information</h4>  
+                        {% for field in form %}  
+                            {% if field.name in step1_fields %}  
+                                <div class="mb-3 position-relative">  
+                                    <div class="form-floating">  
+                                        {{ field|add_class:"form-control"|attr:"placeholder= " }}  
+                                        {{ field.label_tag }}  
+                                        <!-- Input Icons -->  
+                                        {% if field.name == 'username' %}  
+                                            <i class="bi bi-person-fill input-icon"></i>  
+                                        {% elif field.name == 'email' %}  
+                                            <i class="bi bi-envelope-fill input-icon"></i>  
+                                        {% elif field.name == 'password1' or field.name == 'password2' %}  
+                                            <i class="bi bi-lock-fill input-icon"></i>  
+                                        {% endif %}  
+                                    </div>  
+                                    {% if field.errors %}  
+                                        {% for error in field.errors %}  
+                                            <div class="invalid-tooltip">  
+                                                {{ error }}  
+                                            </div>  
+                                        {% endfor %}  
+                                    {% endif %}  
+                                </div>  
+                            {% endif %}  
+                        {% endfor %}  
+                        <div class="text-end">  
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>  
+                        </div>  
+                    </div>  
+  
+                    <!-- Step 2: Goals -->  
+                    <div id="step2" class="form-step d-none">  
+                        <h4 class="mb-3">Goals</h4>  
+                        {% for field in form %}  
+                            {% if field.name in step2_fields %}  
+                                <div class="mb-3 position-relative">  
+                                    <div class="form-floating">  
+                                        {{ field|add_class:"form-control"|attr:"placeholder= " }}  
+                                        {{ field.label_tag }}  
+                                    </div>  
+                                    {% if field.errors %}  
+                                        {% for error in field.errors %}  
+                                            <div class="invalid-tooltip">  
+                                                {{ error }}  
+                                            </div>  
+                                        {% endfor %}  
+                                    {% endif %}  
+                                </div>  
+                            {% endif %}  
+                        {% endfor %}  
+                        <div class="d-flex justify-content-between">  
+                            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>  
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>  
+                        </div>  
+                    </div>  
+  
+                    <!-- Step 3: Security Check -->  
+                    <div id="step3" class="form-step d-none">  
+                        <h4 class="mb-3">Security Check</h4>  
+                        <!-- CAPTCHA Field -->  
+                        <div class="mb-3 position-relative">  
+                            {{ form.captcha }}  
+                            {% if form.captcha.errors %}  
+                                {% for error in form.captcha.errors %}  
+                                    <div class="text-danger">{{ error }}</div>  
+                                {% endfor %}  
+                            {% endif %}  
+                        </div>  
+                        <div class="d-flex justify-content-between">  
+                            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>  
+                            <button type="submit" class="btn btn-success btn-block" id="registerButton">  
+                                Register  
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loadingSpinner"></span>  
+                            </button>  
+                        </div>  
+                    </div>  
+                    <div class="mt-3 text-center">  
+                        Already have an account? <a href="{% url 'login' %}">Login here</a>  
+                    </div>  
+                </form>  
+            </div>  
+        </div>  
+    </div>  
+</div>  
+{% endblock %}  
+  
+{% block extra_js %}  
+<script>  
+    // Define fields for each step  
+    const step1Fields = ['username', 'email', 'password1', 'password2'];  
+    const step2Fields = ['height', 'target_weight'];  
+  
+    // Multi-Step Form Logic  
+    let currentStep = 1;  
+    const totalSteps = 3;  
+    const progressBar = document.getElementById('progressBar');  
+  
+    function showStep(step) {  
+        for (let i = 1; i <= totalSteps; i++) {  
+            const formStep = document.getElementById('step' + i);  
+            if (i === step) {  
+                formStep.classList.remove('d-none');  
+            } else {  
+                formStep.classList.add('d-none');  
+            }  
+        }  
+        updateProgressBar(step);  
+    }  
+  
+    function nextStep() {  
+        if (currentStep < totalSteps) {  
+            currentStep++;  
+            showStep(currentStep);  
+        }  
+    }  
+  
+    function prevStep() {  
+        if (currentStep > 1) {  
+            currentStep--;  
+            showStep(currentStep);  
+        }  
+    }  
+  
+    function updateProgressBar(step) {  
+        const progress = (step / totalSteps) * 100;  
+        progressBar.style.width = progress + '%';  
+        progressBar.innerText = 'Step ' + step + ' of ' + totalSteps;  
+    }  
+  
+    // Initialize form to show the first step  
+    showStep(currentStep);  
+  
+    // Client-side form validation and loading indicator  
+    (function () {  
+        'use strict';  
+        const form = document.querySelector('.needs-validation');  
+        const registerButton = document.getElementById('registerButton');  
+        const loadingSpinner = document.getElementById('loadingSpinner');  
+  
+        form.addEventListener('submit', function (event) {  
+            if (!form.checkValidity()) {  
+                event.preventDefault();  
+                event.stopPropagation();  
+            } else {  
+                // Show loading spinner on valid submission  
+                registerButton.disabled = true;  
+                loadingSpinner.classList.remove('d-none');  
+            }  
+            form.classList.add('was-validated');  
+        }, false);  
+    })();  
+</script>  
+{% endblock %}  
