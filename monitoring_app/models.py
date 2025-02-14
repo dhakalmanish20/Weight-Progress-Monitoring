@@ -95,3 +95,15 @@ class MealItem(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.meal_plan.name})"
+    
+    class FitnessTracking(models.Model):
+        date = models.DateField()
+        weight_kg = models.FloatField(null=True, blank=True)
+        calories_consumed = models.IntegerField(null=True, blank=True)
+        workout_intensity = models.CharField(max_length=50, null=True, blank=True)
+        steps = models.IntegerField(null=True, blank=True)
+        sleep_hours = models.FloatField(null=True, blank=True)
+        heart_rate = models.IntegerField(null=True, blank=True)
+        blood_pressure = models.CharField(max_length=20, null=True, blank=True)
+        mood = models.CharField(max_length=50, null=True, blank=True)
+        food_items = models.TextField(null=True, blank=True)
