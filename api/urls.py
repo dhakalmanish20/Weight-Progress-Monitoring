@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import UserLogViewSet, UserProfileViewSet, MessageViewSet, MealPlanViewSet
 
+# Create router and register viewsets
 router = DefaultRouter()
 router.register(r'userlogs', UserLogViewSet, basename='userlog')
 router.register(r'userprofiles', UserProfileViewSet, basename='userprofile')

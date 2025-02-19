@@ -1,95 +1,60 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import (
-    UserProfile, UserLog, FoodItem, FoodConsumption, Message,
-    Trainer, MealPlan, MealItem
-)
-from two_factor.forms import AuthenticationTokenForm, DeviceValidationForm
+from .models import UserProfile
 from captcha.fields import CaptchaField
 
-class RegisterForm(UserCreationForm):
+class AccountInfoForm(forms.Form):
+    username = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
-    height = forms.FloatField(required=True, label='Height (m)')
+    password1 = forms.CharField(widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(widget=forms.PasswordInput, required=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords do not match.")
+        return cleaned_data
+
+class GoalsForm(forms.Form):
+    height = forms.FloatField(required=False, label='Height (m)')
     target_weight = forms.FloatField(required=False, label='Target Weight (kg)')
+
+class SecurityCheckForm(forms.Form):
     captcha = CaptchaField()
-    class Meta:
-        model = User
-        fields = ["username", "email", "height", "target_weight", "password1", "password2"]
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-            UserProfile.objects.create(
-                user=user,
-                height=self.cleaned_data['height'],
-                target_weight=self.cleaned_data.get('target_weight')
-            )
+
+class UserCreationWizard:
+    def __init__(self, data=None):
+        self.data = data or {}
+        self.steps = ['account', 'goals', 'security']
+
+    def get_form_data(self, step):
+        return self.data.get(step, {})
+
+    def is_valid(self):
+        required_steps = ['account', 'goals', 'security']
+        return all(self.data.get(step) for step in required_steps)
+
+    def save(self):
+        if not self.is_valid():
+            raise ValueError("All steps must be completed and valid")
+
+        account_data = self.data['account']
+        goals_data = self.data['goals']
+
+        # Create user
+        user = User.objects.create_user(
+            username=account_data['username'],
+            email=account_data['email'],
+            password=account_data['password1']
+        )
+
+        # Create or update UserProfile
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
+        user_profile.height = goals_data.get('height')
+        user_profile.target_weight = goals_data.get('target_weight')
+        user_profile.save()
+
         return user
-
-class UserProfileForm(forms.ModelForm):
-    friends = forms.ModelMultipleChoiceField(
-        queryset=UserProfile.objects.exclude(user__username='admin'),
-        required=False,
-        widget=forms.SelectMultiple(attrs={'class':'form-control'})
-    )
-    profile_picture = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class':'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'rows':4}), required=False)
-    class Meta:
-        model = UserProfile
-        fields = ['height', 'target_weight', 'bio', 'friends', 'profile_picture']
-
-class FoodConsumptionForm(forms.ModelForm):
-    class Meta:
-        model = FoodConsumption
-        fields = ['food_item', 'quantity']
-
-FoodConsumptionFormSet = forms.inlineformset_factory(
-    UserLog,
-    FoodConsumption,
-    form=FoodConsumptionForm,
-    extra=1,
-    can_delete=True
-)
-
-class UserLogForm(forms.ModelForm):
-    class Meta:
-        model = UserLog
-        fields = [
-            'weight', 'calories_consumed', 'workout_intensity', 'steps',
-            'sleep_hours', 'mood', 'heart_rate', 'blood_pressure'
-        ]
-        widgets = {'workout_intensity': forms.RadioSelect()}
-
-class MessageForm(forms.ModelForm):
-    class Meta:
-        model = Message
-        fields = ['receiver', 'content']
-        widgets = {
-            'receiver': forms.Select(attrs={'class':'form-control'}),
-            'content': forms.Textarea(attrs={'class':'form-control','rows':4}),
-        }
-
-class TrainerForm(forms.ModelForm):
-    class Meta:
-        model = Trainer
-        fields = ['certification', 'bio', 'hourly_rate']
-
-class MealItemForm(forms.ModelForm):
-    class Meta:
-        model = MealItem
-        fields = ['name', 'serving_size', 'calories', 'protein', 'fat', 'carbs']
-
-MealItemFormSet = forms.inlineformset_factory(
-    MealPlan,
-    MealItem,
-    form=MealItemForm,
-    extra=1,
-    can_delete=True
-)
-
-class MealPlanForm(forms.ModelForm):
-    class Meta:
-        model = MealPlan
-        fields = ['name', 'total_calories', 'notes']

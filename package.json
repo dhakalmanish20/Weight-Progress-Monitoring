@@ -1,0 +1,29 @@
+{
+  "name": "weight-progress-monitoring",
+  "version": "1.0.0",
+  "description": "The Personalized Weight Progress Monitoring System is a comprehensive web application designed to assist users in tracking their fitness journey. It leverages advanced machine learning models to provide predictions, insights, and personalized feedback.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhakalmanish20/Weight-Progress-Monitoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dhakalmanish20/Weight-Progress-Monitoring/issues"
+  },
+  "homepage": "https://github.com/dhakalmanish20/Weight-Progress-Monitoring#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.2",
+    "tailwindcss": "^4.0.7"
+  },
+  "dependencies": {
+    "weight-progress-monitoring": "file:"
+  }
+}

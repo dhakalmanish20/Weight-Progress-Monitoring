@@ -3,14 +3,21 @@
 {% block title %}Send Message{% endblock %}
 
 {% block content %}
-<h2>Send Message</h2>
+<h1>Send Message</h1>
 <form method="POST">
     {% csrf_token %}
-    {% for f in form %}
-        <div class="mb-3">
-            {{ f.label_tag }}{{ f }}
-        </div>
-    {% endfor %}
+    <div class="mb-3">
+        <label for="receiver_id" class="form-label">Select Receiver</label>
+        <select name="receiver_id" id="receiver_id" class="form-select" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">Message Content</label>
+        <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
+    </div>
     <button type="submit" class="btn btn-primary">Send</button>
 </form>
 {% endblock %}

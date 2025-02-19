@@ -1,35 +1,47 @@
-from rest_framework import viewsets, permissions
-from monitoring_app.models import UserLog, UserProfile, Message, MealPlan
-from .serializers import UserLogSerializer, UserProfileSerializer, MessageSerializer, MealPlanSerializer
+from rest_framework import viewsets, serializers
+from monitoring_app.models import WeightLog, UserProfile, Message, MealPlan
+from django.contrib.auth.models import User
+
+class UserLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightLog  # Changed from UserLog to WeightLog
+        fields = ['id', 'user', 'date', 'weight', 'calories_consumed', 'workout_intensity', 'steps', 'sleep_hours', 'heart_rate', 'blood_pressure', 'mood']
 
 class UserLogViewSet(viewsets.ModelViewSet):
-    queryset = UserLog.objects.all()
     serializer_class = UserLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return UserLog.objects.filter(user=self.request.user)
+        return WeightLog.objects.all()
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user', 'height', 'target_weight', 'profile_picture']
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return UserProfile.objects.filter(user=self.request.user)
+        return UserProfile.objects.all()
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['id', 'sender', 'receiver', 'content', 'timestamp']
 
 class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Message.objects.filter(receiver=self.request.user) | Message.objects.filter(sender=self.request.user)
+        return Message.objects.all()
+
+class MealPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MealPlan
+        fields = ['id', 'user', 'name', 'created_at']
 
 class MealPlanViewSet(viewsets.ModelViewSet):
-    queryset = MealPlan.objects.all()
     serializer_class = MealPlanSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return MealPlan.objects.filter(user=self.request.user)
+        return MealPlan.objects.all()
