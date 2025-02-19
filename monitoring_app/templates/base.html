@@ -18,39 +18,39 @@
     <!-- Additional CSS Files -->  
     {% block extra_css %}{% endblock %}  
 </head>  
-<body>  
+<body class="bg-light font-poppins text-gray-800">  
     <!-- Navbar -->  
-    <nav class="navbar navbar-expand-lg navbar-dark py-3">  
+    <nav class="navbar navbar-expand-lg navbar-dark py-3" style="background: linear-gradient(135deg, #00468B 0%, #002f5f 100%);">  
         <div class="container">  
-            <a class="navbar-brand" href="{% url 'index' %}">FitnessPro</a>  
+            <a class="navbar-brand text-white" href="{% url 'index' %}">FitnessPro</a>  
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle navigation">  
                 <span class="navbar-toggler-icon"></span>  
             </button>  
             <div class="collapse navbar-collapse" id="navMenu">  
                 <div class="navbar-nav ms-auto align-items-center">  
                     {% if user.is_authenticated %}  
-                        <a class="nav-link{% if request.path == '/dashboard/' %} active{% endif %}" href="{% url 'dashboard' %}">  
-                            <i class="bi bi-speedometer2 me-1"></i>Dashboard  
+                        <a class="nav-link{% if request.path == '/dashboard/' %} active{% endif %}" href="{% url 'dashboard' %}" style="color: rgba(255,255,255,0.9);">  
+                            <i class="bi bi-speedometer2 me-1 text-white"></i>Dashboard  
                         </a>  
-                        <a class="nav-link{% if request.path == '/edit_profile/' %} active{% endif %}" href="{% url 'edit_profile' %}">  
-                            <i class="bi bi-person-circle me-1"></i>Profile  
+                        <a class="nav-link{% if request.path == '/edit_profile/' %} active{% endif %}" href="{% url 'edit_profile' %}" style="color: rgba(255,255,255,0.9);">  
+                            <i class="bi bi-person-circle me-1 text-white"></i>Profile  
                         </a>  
-                        <a class="nav-link" href="{% url 'logout' %}">  
-                            <i class="bi bi-box-arrow-right me-1"></i>Logout  
+                        <a class="nav-link" href="{% url 'login' %}" style="color: rgba(255,255,255,0.9);">  
+                            <i class="bi bi-box-arrow-right me-1 text-white"></i>Logout  
                         </a>  
                         {% with profile=user.userprofile %}  
                             {% if profile and profile.profile_picture %}  
-                                <img src="{{ profile.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle ms-3" width="40" height="40">  
+                                <img src="{% get_static_prefix %}images/{{ profile.profile_picture.url|default:'default-avatar.jpg' }}" alt="{{ user.username }}" class="rounded-circle ms-3" width="40" height="40" onerror="this.src='{% static 'images/default-avatar.jpg' %}'">  
                             {% else %}  
                                 <i class="bi bi-person-circle fa-2x ms-3 text-white"></i>  
                             {% endif %}  
                         {% endwith %}  
                     {% else %}  
-                        <a class="nav-link{% if request.path == '/login/' %} active{% endif %}" href="{% url 'login' %}">  
-                            <i class="bi bi-box-arrow-in-right me-1"></i>Login  
+                        <a class="nav-link{% if request.path == '/login/' %} active{% endif %}" href="{% url 'login' %}" style="color: rgba(255,255,255,0.9);">  
+                            <i class="bi bi-box-arrow-in-right me-1 text-white"></i>Login  
                         </a>  
-                        <a class="nav-link{% if request.path == '/register/' %} active{% endif %}" href="{% url 'register' %}">  
-                            <i class="bi bi-pencil-square me-1"></i>Register  
+                        <a class="nav-link{% if request.path == '/register/' %} active{% endif %}" href="{% url 'register' %}" style="color: rgba(255,255,255,0.9);">  
+                            <i class="bi bi-pencil-square me-1 text-white"></i>Register  
                         </a>  
                     {% endif %}  
                 </div>  
@@ -64,11 +64,11 @@
     </main>  
 
     <!-- Footer -->  
-    <footer class="footer mt-5 py-4">  
+    <footer class="footer mt-5 py-4" style="background: linear-gradient(135deg, #00468B 0%, #002f5f 100%); color: #fff;">  
         <div class="container text-center">  
-            <p>&copy; {{ now|date:"Y" }} FitnessPro. All rights reserved.</p>  
+            <p>© {{ now|date:"Y" }} FitnessPro. All rights reserved.</p>  
             <p>  
-                <a href="{% url 'index' %}#privacy">Privacy Policy</a> | <a href="{% url 'index' %}#terms">Terms of Service</a>  
+                <a href="{% url 'index' %}#privacy" class="text-white hover:text-yellow-300">Privacy Policy</a> | <a href="{% url 'index' %}#terms" class="text-white hover:text-yellow-300">Terms of Service</a>  
             </p>  
         </div>  
     </footer>  

@@ -35,8 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const backToTopButton = document.querySelector('.back-to-top');
   if (backToTopButton) {
       window.addEventListener('scroll', () => {
-          backToTopButton.classList.toggle('opacity-100', window.scrollY > 300);
-          backToTopButton.classList.toggle('opacity-0', window.scrollY <= 300);
+          backToTopButton.classList.toggle('show', window.scrollY > 300);
       });
 
       backToTopButton.addEventListener('click', (e) => {
@@ -48,12 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  // Mobile menu toggle for Tailwind navbar
-  const menuButton = document.querySelector('.md\\:hidden');
-  const navMenu = document.querySelector('#navMenu');
+  // Mobile menu toggle
+  const menuButton = document.querySelector('.navbar-toggler');
+  const navMenu = document.querySelector('.nav-menu');
   if (menuButton && navMenu) {
       menuButton.addEventListener('click', () => {
-          navMenu.classList.toggle('hidden');
+          navMenu.classList.toggle('active');
       });
   }
 });

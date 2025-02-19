@@ -1,10 +1,9 @@
-<!-- File: monitoring_app/templates/login.html -->  
-  
 {% extends "base.html" %}  
 {% load static %}  
-{% load form_tags %}  
+{% load widget_tweaks %}  <!-- Use widget_tweaks instead of form_tags -->
+
 {% block title %}Login - FitnessPro{% endblock %}  
-  
+
 {% block content %}  
 <div class="container my-5">  
     <div class="row justify-content-center">  
@@ -13,73 +12,24 @@
                 <h2 class="card-title text-center mb-4">Welcome Back!</h2>  
                 <form method="post">  
                     {% csrf_token %}  
-  
-                    <!-- Include the management form for wizard -->  
-                    {{ wizard.management_form }}  
-  
-                    <!-- Display form errors (non-field errors) -->  
-                    {% if wizard.form.non_field_errors %}  
-                        <div class="alert alert-danger">  
-                            {% for error in wizard.form.non_field_errors %}  
-                                {{ error }}  
-                            {% endfor %}  
-                        </div>  
+
+                    {% if error %}  
+                        <div class="alert alert-danger">{{ error }}</div>  
                     {% endif %}  
-  
-                    <!-- Render form steps -->  
-                    {% if wizard.steps.current == 'auth' %}  
-                        {% for field in wizard.form %}  
-                            <div class="mb-3">  
-                                {{ field.label_tag }}  
-                                {{ field|add_class:"form-control" }}  
-  
-                                {% if field.help_text %}  
-                                    <small class="form-text text-muted">{{ field.help_text }}</small>  
-                                {% endif %}  
-  
-                                {% if field.errors %}  
-                                    {% for error in field.errors %}  
-                                        <div class="text-danger">{{ error }}</div>  
-                                    {% endfor %}  
-                                {% endif %}  
-                            </div>  
-                        {% endfor %}  
-  
-                    {% elif wizard.steps.current == 'token' %}  
-                        <p>A verification token has been sent to your device. Please enter it below.</p>  
-                        {% for field in wizard.form %}  
-                            <div class="mb-3">  
-                                {{ field.label_tag }}  
-                                {{ field|add_class:"form-control" }}  
-  
-                                {% if field.errors %}  
-                                    {% for error in field.errors %}  
-                                        <div class="text-danger">{{ error }}</div>  
-                                    {% endfor %}  
-                                {% endif %}  
-                            </div>  
-                        {% endfor %}  
-  
-                    {% elif wizard.steps.current == 'backup' %}  
-                        <p>Enter one of your backup codes.</p>  
-                        {% for field in wizard.form %}  
-                            <div class="mb-3">  
-                                {{ field.label_tag }}  
-                                {{ field|add_class:"form-control" }}  
-  
-                                {% if field.errors %}  
-                                    {% for error in field.errors %}  
-                                        <div class="text-danger">{{ error }}</div>  
-                                    {% endfor %}  
-                                {% endif %}  
-                            </div>  
-                        {% endfor %}  
-                    {% endif %}  
-  
+
+                    <div class="mb-3">  
+                        <label for="id_username" class="form-label">Username</label>  
+                        <input type="text" name="username" id="id_username" class="form-control" required>  
+                    </div>  
+                    <div class="mb-3">  
+                        <label for="id_password" class="form-label">Password</label>  
+                        <input type="password" name="password" id="id_password" class="form-control" required>  
+                    </div>  
+
                     <div class="d-grid">  
                         <button type="submit" class="btn btn-primary btn-block">Login</button>  
                     </div>  
-  
+
                     <div class="mt-3 text-center">  
                         Don't have an account? <a href="{% url 'register' %}">Register here</a>  
                     </div>  

@@ -36,13 +36,13 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'monitoring_app',
     'api',
-    'widget_tweaks',  # Added for template tag support
+    'widget_tweaks',
+      # For template tags
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

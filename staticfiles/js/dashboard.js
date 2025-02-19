@@ -1,160 +1,102 @@
 function initializeDashboardCharts(dates, weights, calories, foodData) {
-    // Validate input data
-    if (!Array.isArray(dates)) {
-      console.error('Invalid dates array');
-      return;
+    if (!Array.isArray(dates) || !Array.isArray(weights) || !Array.isArray(calories) || !foodData) {
+        console.error('Invalid chart data');
+        return;
     }
-    if (!Array.isArray(weights) || !Array.isArray(calories)) {
-      console.error('Invalid weights or calories array');
-      return;
-    }
-    if (!foodData || !Array.isArray(foodData.labels) || !Array.isArray(foodData.values)) {
-      console.error('Invalid foodData object');
-      return;
-    }
-  
+
     // Weight Chart
-    const ctxWeight = document.getElementById('weightChart');
+    const ctxWeight = document.getElementById('weightChart')?.getContext('2d');
     if (ctxWeight) {
-      try {
         new Chart(ctxWeight, {
-          type: 'line',
-          data: {
-            labels: dates.reverse(),
-            datasets: [{
-              label: 'Weight (kg)',
-              data: weights.reverse(),
-              borderColor: '#00468B',
-              backgroundColor: 'rgba(0,70,139,0.1)',
-              fill: true,
-              tension: 0.4,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              tooltip: {
-                enabled: true,
-                mode: 'index',
-                intersect: false,
-              },
-              legend: {
-                display: true,
-                position: 'bottom',
-              },
+            type: 'line',
+            data: {
+                labels: dates.reverse(),
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: weights.reverse(),
+                    borderColor: '#00468B',
+                    backgroundColor: 'rgba(0,70,139,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                }],
             },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false },
                 },
-              },
-              y: {
-                grid: {
-                  color: '#e0e0e0',
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
+                    x: { grid: { display: false } },
                 },
-              },
             },
-          },
         });
-      } catch (error) {
-        console.error('Weight Chart initialization failed:', error);
-      }
     }
-  
+
     // Calorie Chart
-    const ctxCalorie = document.getElementById('calorieChart');
+    const ctxCalorie = document.getElementById('calorieChart')?.getContext('2d');
     if (ctxCalorie) {
-      try {
         new Chart(ctxCalorie, {
-          type: 'bar',
-          data: {
-            labels: dates,
-            datasets: [{
-              label: 'Calories Consumed',
-              data: calories.reverse(),
-              backgroundColor: '#FFD700',
-              borderColor: '#FFD700',
-              borderWidth: 1,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              tooltip: {
-                enabled: true,
-                mode: 'index',
-                intersect: false,
-              },
-              legend: {
-                display: true,
-                position: 'bottom',
-              },
+            type: 'bar',
+            data: {
+                labels: dates.reverse(),
+                datasets: [{
+                    label: 'Calories Consumed',
+                    data: calories.reverse(),
+                    backgroundColor: '#FFD700',
+                    borderColor: '#FFD700',
+                    borderWidth: 1,
+                }],
             },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false },
                 },
-              },
-              y: {
-                grid: {
-                  color: '#e0e0e0',
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#e0e0e0' } },
+                    x: { grid: { display: false } },
                 },
-              },
             },
-          },
         });
-      } catch (error) {
-        console.error('Calorie Chart initialization failed:', error);
-      }
     }
-  
+
     // Food Consumption Chart
-    const ctxFood = document.getElementById('foodChart');
+    const ctxFood = document.getElementById('foodChart')?.getContext('2d');
     if (ctxFood) {
-      try {
         new Chart(ctxFood, {
-          type: 'doughnut',
-          data: {
-            labels: foodData.labels,
-            datasets: [{
-              data: foodData.values,
-              backgroundColor: [
-                '#FF6384', '#36A2EB', '#FFCE56',
-                '#8A2BE2', '#FF4500', '#008080',
-                '#FFD700', '#7CFC00', '#FF69B4', '#CD853F',
-              ],
-              borderWidth: 1,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              tooltip: {
-                enabled: true,
-                callbacks: {
-                  label: (context) => {
-                    const label = context.label || '';
-                    const value = context.raw || 0;
-                    return `${label}: ${value}%`;
-                  },
-                },
-              },
-              legend: {
-                display: true,
-                position: 'bottom',
-              },
+            type: 'doughnut',
+            data: {
+                labels: foodData.labels,
+                datasets: [{
+                    data: foodData.values,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#FF4500'],
+                    borderWidth: 1,
+                }],
             },
-          },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw}%` } },
+                },
+            },
         });
-      } catch (error) {
-        console.error('Food Chart initialization failed:', error);
-      }
     }
-  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dates = JSON.parse(document.getElementById('dates-data')?.textContent || '[]');
+    const weights = JSON.parse(document.getElementById('weights-data')?.textContent || '[]');
+    const calories = JSON.parse(document.getElementById('calories-data')?.textContent || '[]');
+    const foodData = JSON.parse(document.getElementById('food-consumption-data')?.textContent || '{}');
+
+    initializeDashboardCharts(dates, weights, calories, foodData);
+});

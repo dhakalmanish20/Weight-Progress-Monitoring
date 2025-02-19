@@ -92,7 +92,6 @@ function initializeDashboardCharts(dates, weights, calories, foodData) {
     }
 }
 
-// Auto-initialize charts on page load
 document.addEventListener('DOMContentLoaded', () => {
     const dates = JSON.parse(document.getElementById('dates-data')?.textContent || '[]');
     const weights = JSON.parse(document.getElementById('weights-data')?.textContent || '[]');
