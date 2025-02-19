@@ -5,10 +5,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'YOUR-SECRET-KEY-HERE'
+SECRET_KEY = 'your-secure-secret-key-here'  # Replace with a secure key in production
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'monitoring_app',
     'api',
+    'widget_tweaks',  # Added for template tag support
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
             ],
+            'libraries': {
+                'widget_tweaks': 'widget_tweaks.templatetags.widget_tweaks',  # Register widget_tweaks
+            },
         },
     },
 ]
@@ -72,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'weight_monitoring.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -82,7 +86,7 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -94,7 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
+# https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -105,16 +109,18 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "monitoring_app/static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATIC_URL = '/static/'  
-STATICFILES_DIRS = [BASE_DIR / 'monitoring_app' / 'static']  
-
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -122,9 +128,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+
 # Login and Logout Redirects
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'index'
+
 
 # Two-Factor Authentication
 TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake'
@@ -137,3 +145,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CAPTCHA_IMAGE_SIZE = (150, 50)
 CAPTCHA_FONT_SIZE = 32
 CAPTCHA_LENGTH = 6
+
+# Security Settings
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+
+# Session Settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Use database-backed sessions
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Development-specific settings
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1']

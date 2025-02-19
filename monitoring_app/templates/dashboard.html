@@ -19,16 +19,55 @@
     <p>Current Weight: <strong>{{ current_weight }} kg</strong></p>
     <p>Target Weight: <strong>{{ target_weight }} kg</strong></p>
     <div class="progress" style="height: 25px;">
+        <div class="progress-bar" role="progressbar" style="width: {{ progress_percentage }}%;" aria-valuenow="{{ current_weight }}" aria-valuemin="0" aria-valuemax="{{ target_weight }}">{{ progress_percentage|floatformat:0 }}%</div>
     </div>
+</div>
+
+<!-- Predictions Section -->
+<div class="card p-4 shadow-sm mb-4">
+    <h3>Weight Predictions (Next 7 Days)</h3>
+    {% if predictions %}
+    <ul class="list-group">
+        {% for pred_date, pred_weight in predictions %}
+        <li class="list-group-item">Date: {{ pred_date }} - Predicted Weight: ~{{ pred_weight|floatformat:1 }} kg</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No predictions available. Add more logs to generate forecasts.</p>
+    {% endif %}
+</div>
+
+<!-- ARIMA Forecast Section -->
+<div class="card p-4 shadow-sm mb-4">
+    <h3>ARIMA Forecast (Next 7 Days)</h3>
+    {% if arima_forecast %}
+    <ul class="list-group">
+        {% for forecast in arima_forecast %}
+        <li class="list-group-item">Forecasted Weight: ~{{ forecast|floatformat:1 }} kg</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No ARIMA forecast available. More data is needed.</p>
+    {% endif %}
+</div>
+
+<!-- User Segmentation (Clusters) -->
+<div class="card p-4 shadow-sm mb-4">
+    <h3>User Segmentation</h3>
+    {% if clusters %}
+    <p>Your weight data has been clustered into group: {{ clusters }}</p>
+    {% else %}
+    <p>No clustering data available. Add more weight logs.</p>
+    {% endif %}
 </div>
 
 <!-- Dietary Recommendations Section -->
 <div class="card p-4 shadow-sm mb-4">
     <h3>Dietary Recommendations</h3>
     {% if recommendations %}
-    <ul>
+    <ul class="list-group">
         {% for rec in recommendations %}
-            <li>{{ rec }}</li>
+            <li class="list-group-item">{{ rec }}</li>
         {% endfor %}
     </ul>
     {% else %}
@@ -37,7 +76,6 @@
 </div>
 
 <!-- Existing Charts and Graphs -->
-<!-- Include the data in a script tag using json_script -->
 {{ dates|json_script:"dates-data" }}
 {{ weights|json_script:"weights-data" }}
 {{ calories|json_script:"calories-data" }}
@@ -111,7 +149,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Include Plotly.js for charts -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script type="text/javascript">
@@ -120,7 +157,6 @@
     var calories = JSON.parse(document.getElementById('calories-data').textContent);
     var foodConsumptionData = JSON.parse(document.getElementById('food-consumption-data').textContent);
 
-    // Ensure that the dates, weights, and calories arrays are defined
     if (dates.length > 0 && weights.length > 0 && calories.length > 0) {
         // Weight Chart
         var weightTrace = {
