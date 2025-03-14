@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Push-Up",
+    "type": "strength",
+    "equipment": "bodyweight",
+    "difficulty": "beginner",
+    "intensity": "medium",
+    "sets": 3,
+    "reps": 10,
+    "frequency_per_week": 3
+  },
+  {
+    "name": "Pull-Up",
+    "type": "strength",
+    "equipment": "bodyweight",
+    "difficulty": "intermediate",
+    "intensity": "high",
+    "sets": 3,
+    "reps": 8,
+    "frequency_per_week": 3
+  },
+  {
+    "name": "Squat",
+    "type": "strength",
+    "equipment": "gym",
+    "difficulty": "beginner",
+    "intensity": "medium",
+    "sets": 3,
+    "reps": 12,
+    "frequency_per_week": 2
+  },
+  {
+    "name": "Bench Press",
+    "type": "strength",
+    "equipment": "gym",
+    "difficulty": "intermediate",
+    "intensity": "medium",
+    "sets": 4,
+    "reps": 8,
+    "frequency_per_week": 2
+  },
+  {
+    "name": "Plank",
+    "type": "core",
+    "equipment": "bodyweight",
+    "difficulty": "beginner",
+    "intensity": "medium",
+    "sets": 3,
+    "duration": 60,
+    "frequency_per_week": 3
+  },
+  {
+    "name": "Deadlift",
+    "type": "strength",
+    "equipment": "gym",
+    "difficulty": "advanced",
+    "intensity": "high",
+    "sets": 3,
+    "reps": 5,
+    "frequency_per_week": 1
+  },
+  {
+    "name": "Burpees",
+    "type": "cardio",
+    "equipment": "bodyweight",
+    "difficulty": "advanced",
+    "intensity": "high",
+    "sets": 3,
+    "reps": 10,
+    "frequency_per_week": 2
+  }
+]

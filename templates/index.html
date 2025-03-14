@@ -1,0 +1,19 @@
+<!-- File: templates/index.html -->
+{% extends 'base.html' %} {% block content %}
+
+<div class="text-center">
+  <h1 class="display-4">Welcome to WeightMonitor</h1>
+  <p class="lead">
+    A simple weight tracking web app with diet & exercise recommendations.
+  </p>
+  <div class="mt-4">
+    <!-- "Get Started" could link to login or signup if user is not logged in -->
+    {% if session.username %}
+    <a href="/profile" class="btn btn-success btn-lg">Go to Dashboard</a>
+    {% else %}
+    <a href="/login" class="btn btn-primary btn-lg">Get Started</a>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

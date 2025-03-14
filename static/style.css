@@ -1,0 +1,79 @@
+/* File: static/style.css */
+body {
+  background-color: #f6f8fa;
+  margin: 0;
+  padding: 0;
+}
+.navbar-brand {
+  font-weight: bold;
+  color: #fff !important;
+}
+.jumbotron {
+  background: #d9edf7;
+  padding: 2rem;
+  border-radius: 8px;
+}
+.container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#meal-container {
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+/* Custom Dark Theme */
+.bg-dark-2 {
+  background-color: #1a1a1a !important;
+  border: 1px solid #2d2d2d !important;
+}
+
+.bg-primary-gradient {
+  background: linear-gradient(45deg, #0062cc, #004ba0) !important;
+}
+
+.form-control.bg-dark,
+.form-select.bg-dark {
+  background-color: #2d2d2d !important;
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.form-control.bg-dark:focus,
+.form-select.bg-dark:focus {
+  background-color: #333333 !important;
+  border-color: #007bff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 98, 204, 0.25);
+}
+
+.text-muted {
+  color: #8e8e8e !important;
+}
+
+/* Additional styles for layout */
+
+.card {
+  background-color: #2d2d2d;
+  border: none;
+}
+
+.card-body {
+  color: #ffffff;
+}
+
+.progress-bar {
+  background-color: #36a2eb;
+}
+
+.btn-primary,
+.btn-info {
+  background-color: #0062cc;
+  border-color: #0062cc;
+}
+
+.btn-primary:hover,
+.btn-info:hover {
+  background-color: #004ba0;
+  border-color: #004ba0;
+}

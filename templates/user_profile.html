@@ -1,0 +1,75 @@
+{% extends 'base.html' %}  
+{% block content %}  
+  
+<h2>Update Profile</h2>  
+  
+<div class="row">  
+  <div class="col-md-4">  
+    <!-- Profile Picture -->  
+    <div class="card">  
+      <div class="card-body text-center">  
+        {% if user.profile_picture %}  
+        <img src="{{ url_for('static', filename='profile_pics/' + user.profile_picture) }}" class="img-thumbnail" alt="Profile Picture">  
+        {% else %}  
+        <img src="{{ url_for('static', filename='profile_pics/default.jpg') }}" class="img-thumbnail" alt="Profile Picture">  
+        {% endif %}  
+        <form method="POST" enctype="multipart/form-data">  
+          <div class="mb-3">  
+            <label for="profile_picture" class="form-label">Change Profile Picture</label>  
+            <input class="form-control" type="file" name="profile_picture" id="profile_picture">  
+          </div>  
+          <button type="submit" class="btn btn-primary">Upload</button>  
+        </form>  
+      </div>  
+    </div>  
+  </div>  
+  
+  <div class="col-md-8">  
+    <!-- Personal Information -->  
+    <div class="card">  
+      <div class="card-body">  
+        <form method="POST" enctype="multipart/form-data">  
+          <div class="mb-3">  
+            <label class="form-label">Age</label>  
+            <input type="number" class="form-control" name="age" value="{{ user.age }}">  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Height (cm)</label>  
+            <input type="number" class="form-control" name="height" value="{{ user.height }}">  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Weight (kg)</label>  
+            <input type="number" class="form-control" name="weight" value="{{ user.weight }}">  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Starting Weight (kg)</label>  
+            <input type="number" class="form-control" name="starting_weight" value="{{ user.starting_weight }}">  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Goal Weight (kg)</label>  
+            <input type="number" class="form-control" name="goal_weight" value="{{ user.goal_weight }}">  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Experience Level</label>  
+            <select class="form-select" name="experience">  
+              <option value="beginner" {% if user.experience == 'beginner' %}selected{% endif %}>Beginner</option>  
+              <option value="intermediate" {% if user.experience == 'intermediate' %}selected{% endif %}>Intermediate</option>  
+              <option value="advanced" {% if user.experience == 'advanced' %}selected{% endif %}>Advanced</option>  
+            </select>  
+          </div>  
+          <div class="mb-3">  
+            <label class="form-label">Goal</label>  
+            <select class="form-select" name="goal">  
+              <option value="weight_loss" {% if user.goal == 'weight_loss' %}selected{% endif %}>Weight Loss</option>  
+              <option value="muscle_gain" {% if user.goal == 'muscle_gain' %}selected{% endif %}>Muscle Gain</option>  
+              <option value="maintenance" {% if user.goal == 'maintenance' %}selected{% endif %}>Maintenance</option>  
+            </select>  
+          </div>  
+          <button type="submit" class="btn btn-success">Update Profile</button>  
+        </form>  
+      </div>  
+    </div>  
+  </div>  
+</div>  
+  
+{% endblock %}  
